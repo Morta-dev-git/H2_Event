@@ -138,7 +138,6 @@ body {
 .info-card:nth-child(2), .benefit-card:nth-child(2), .contact-card:nth-child(2) { transition-delay: .1s; }
 .info-card:nth-child(3), .benefit-card:nth-child(3), .contact-card:nth-child(3) { transition-delay: .2s; }
 .info-card:nth-child(4) { transition-delay: .3s; }
-
 /* ── WAVE DIVIDERS ────────────────────────────────────────── */
 .wave-divider { line-height: 0; }
 .wave-divider svg { display: block; width: 100%; }
@@ -1031,10 +1030,24 @@ body {
     .stat-divider { width: auto; height: 1px; }
 
     .timeline::before { display: none; }
-    .timeline-item { grid-template-columns: 3rem 0 1fr; }
+    .timeline-item {
+        grid-template-columns: 3rem 0 1fr;
+        padding-block: 1rem;
+    }
     .tl-connector { display: none; }
     .tl-time { font-size: .9rem; }
     .tl-duration { display: none; }
+
+    /* Stack icon above text instead of side by side */
+    .tl-body {
+        flex-direction: column;
+        gap: .6rem;
+    }
+    .tl-icon-wrap {
+        width: 34px; height: 34px;
+    }
+    .tl-text h4 { font-size: .95rem; }
+    .tl-text p  { font-size: .82rem; }
 }
 
 @media (max-width: 480px) {
@@ -1046,12 +1059,4 @@ body {
     .org-strip-label { display: none; }
     .org-logos { gap: .85rem; }
     .org-logo { height: 26px; }
-}
-.text-accent {
-     text-align: center;
-     display: block;
-     margin-top: -0.3em;
-    }
-.custom-h2{
-    line-height: 1.1;
 }
