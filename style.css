@@ -56,7 +56,7 @@
     --t:    .3s var(--ease);
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 
 body {
     font-family: var(--font-body);
@@ -138,7 +138,6 @@ body {
 .info-card:nth-child(2), .benefit-card:nth-child(2), .contact-card:nth-child(2) { transition-delay: .1s; }
 .info-card:nth-child(3), .benefit-card:nth-child(3), .contact-card:nth-child(3) { transition-delay: .2s; }
 .info-card:nth-child(4) { transition-delay: .3s; }
-
 /* ── WAVE DIVIDERS ────────────────────────────────────────── */
 .wave-divider { line-height: 0; }
 .wave-divider svg { display: block; width: 100%; }
@@ -446,6 +445,7 @@ body {
     width: min(460px, 100%);
     aspect-ratio: 1 / 1;
     flex-shrink: 0;
+    border-radius: 20px;
     /* no background, no border — pure transparent canvas directly on page */
 }
 #molCanvas {
@@ -466,19 +466,7 @@ body {
     display: flex; flex-direction: column; align-items: center; gap: .35rem;
     pointer-events: none;
 }
-.mol3d-eq {
-    font-family: var(--font-display);
-    font-size: .98rem; font-style: italic;
-    color: var(--forest);
-    background: rgba(246,243,236,.75);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    padding: .28rem 1rem;
-    border-radius: var(--r-pill);
-    border: 1px solid rgba(42,89,64,.15);
-    white-space: nowrap;
-    letter-spacing: .01em;
-}
+
 .mol3d-hint {
     font-size: .67rem; font-weight: 500; letter-spacing: .07em;
     text-transform: uppercase;
@@ -1009,17 +997,53 @@ body {
 }
 
 @media (max-width: 768px) {
-    .nav-toggle { display: flex; }
+    .nav-toggle { display: flex; z-index: 1001; position: relative; }
+    
+    /* Close button when menu is open */
+    .nav-toggle[aria-expanded="true"] span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+    .nav-toggle[aria-expanded="true"] span:nth-child(2) {
+        opacity: 0;
+    }
+    .nav-toggle[aria-expanded="true"] span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+    
+    /* Overlay background */
+    .nav-menu::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity .35s var(--ease);
+        z-index: -1;
+    }
+    .nav-menu.is-open::before {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    
     .nav-menu {
-        position: fixed; inset: 0 0 0 30%;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
         flex-direction: column;
-        background: rgba(29,61,43,.97);
+        background: rgba(29,61,43,.98);
         backdrop-filter: blur(14px);
         padding: 5rem 2rem 2rem;
         gap: 1.5rem;
         transform: translateX(100%);
         transition: transform .35s var(--ease);
-        z-index: 999;
+        z-index: 1000;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
     }
     .nav-menu.is-open { transform: translateX(0); }
     .nav-menu a { color: var(--white); font-size: 1rem; }
@@ -1031,10 +1055,41 @@ body {
     .stat-divider { width: auto; height: 1px; }
 
     .timeline::before { display: none; }
-    .timeline-item { grid-template-columns: 3rem 0 1fr; }
+    .timeline-item {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: .75rem;
+        padding-block: 1rem;
+    }
     .tl-connector { display: none; }
-    .tl-time { font-size: .9rem; }
+    .tl-time {
+        font-size: .85rem;
+        flex-shrink: 0;
+        width: 2.8rem;
+        text-align: right;
+        padding-top: .25rem;
+    }
     .tl-duration { display: none; }
+
+    /* Text fills all remaining space */
+    .tl-body {
+        flex: 1;
+        min-width: 0;
+        flex-direction: column;
+        gap: .5rem;
+    }
+    .tl-text {
+        min-width: 0;
+        width: 100%;
+    }
+    .tl-icon-wrap {
+        width: 34px; height: 34px;
+        flex-shrink: 0;
+    }
+    .tl-text h4 { font-size: .95rem; }
+    .tl-text p  { font-size: .82rem; }
+    .cta-section { max-width: 90vw; margin-inline: auto; }
 }
 
 @media (max-width: 480px) {
@@ -1046,12 +1101,4 @@ body {
     .org-strip-label { display: none; }
     .org-logos { gap: .85rem; }
     .org-logo { height: 26px; }
-}
-.text-accent {
-     text-align: center;
-     display: block;
-     margin-top: -0.3em;
-    }
-.custom-h2{
-    line-height: 1.1;
 }
