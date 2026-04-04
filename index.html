@@ -61,7 +61,8 @@
     <div class="org-strip" aria-label="Organisateurs">
         <div class="org-strip-inner">
             <span class="org-strip-label">Organisé par</span>
-            <div class="org-logos">
+            <div class="org-logos-track">
+            <div class="org-logos" id="orgLogos">
 
                 <!-- Original Logos -->
                 <a href="https://fst.rnu.tn" target="_blank" rel="noopener" class="org-logo-link" aria-label="Faculté des Sciences de Tunis">
@@ -192,7 +193,16 @@
                          onerror="this.closest('.org-logo-link').style.display='none'">
                 </a>
 
+                <div class="org-divider" aria-hidden="true"></div>
+
             </div>
+            <script>
+                (function(){
+                    var el = document.getElementById('orgLogos');
+                    if (el) el.innerHTML += el.innerHTML;
+                })();
+            </script>
+            </div><!-- /.org-logos-track -->
         </div>
     </div>
 
@@ -715,7 +725,7 @@
                             <i class="fas fa-envelope-open-text" aria-hidden="true"></i>
                         </div>
                         <h3>Courriel</h3>
-                        <a href="mailto:osiris.fst@gmail.com">osiris.fst@gmail.com</a>
+                        <a href="/cdn-cgi/l/email-protection#dcb3afb5aeb5aff2baafa89cbbb1bdb5b0f2bfb3b1"><span class="__cf_email__" data-cfemail="741b071d061d075a120700341319151d185a171b19">[email&#160;protected]</span></a>
                     </article>
                     <article class="contact-card">
                         <div class="contact-icon-wrap">
@@ -784,7 +794,7 @@
         </div>
     </footer>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         /* ── Mobile nav toggle ───────────────────── */
         const toggle = document.getElementById('navToggle');
         const menu   = document.getElementById('navMenu');
@@ -833,35 +843,17 @@
         document.querySelectorAll('.info-card, .timeline-item, .benefit-card, .member, .contact-card, .deadline-card, .stat-item')
             .forEach(el => observer.observe(el));
 
-        // Handle logo duplication for mobile scrolling
-        let originalLogosHTML = '';
-        const orgLogos = document.querySelector('.org-logos');
-        
-        function handleLogosDuplication() {
-            if (!orgLogos) return;
-            
-            if (!originalLogosHTML) {
-                // Store original HTML on first run
-                originalLogosHTML = orgLogos.innerHTML;
-            }
-            
-            if (window.innerWidth <= 768) {
-                // Mobile: duplicate logos for seamless scrolling
-                if (!orgLogos.classList.contains('duplicated')) {
-                    orgLogos.innerHTML = originalLogosHTML + originalLogosHTML;
-                    orgLogos.classList.add('duplicated');
-                }
-            } else {
-                // Desktop: restore original logos
-                if (orgLogos.classList.contains('duplicated')) {
-                    orgLogos.innerHTML = originalLogosHTML;
-                    orgLogos.classList.remove('duplicated');
+        /* ── Logo marquee handled by inline script above org-logos ── */
+        function _noop() {
+            if (false) {
+                if (false) {
+                    if (false) {
+                        let _x = '';
+                                _x = _x;
+                    }
                 }
             }
         }
-        
-        handleLogosDuplication();
-        window.addEventListener('resize', handleLogosDuplication);
     </script>
 </body>
 </html>
